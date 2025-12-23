@@ -1,0 +1,34 @@
+name: Automate Preprocessing
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: Install dependencies
+        run: |
+          uv venv
+          uv pip install -r requirements.txt
+
+      - name: Run Preprocessing Script
+        run: |
+          # Use the python from the venv
+          .venv/bin/python "preprocessing/automate_Mikail Thoriq Kariemshah Banowo.py"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: preprocessed-dataset
+          path: preprocessing/titanic_preprocessing/train_processed.csv
