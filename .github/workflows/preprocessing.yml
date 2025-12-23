@@ -22,10 +22,17 @@ jobs:
           uv venv
           uv pip install -r requirements.txt
 
+      - name: Run Preprocessing Script
+        run: |
+          # Use the python from the venv
+          .venv/bin/python "preprocessing/automate_Mikail Thoriq Kariemshah Banowo.py"
+
       - name: Commit and Push Processed Data
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          # Ensure directory exists for git add if script failed or didn't create it
+          mkdir -p preprocessing/titanic_preprocessing
           git add preprocessing/titanic_preprocessing/train_processed.csv
           git diff --quiet && git diff --staged --quiet || (git commit -m "update preprocessed dataset [skip ci]" && git push)
 
